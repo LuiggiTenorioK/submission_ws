@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
-from server.settings import ORCID_AUTH_URL, SECRET_KEY
+from server.settings import DEBUG, SECRET_KEY
 from .models import Token, User
 
 logger = logging.getLogger(__name__)
@@ -101,7 +101,7 @@ class BearerAuthentication(BaseAuthentication):
 # Extend Bearer token authentication to exchange it with an external service
 class RemoteAuthentication(BearerAuthentication):
     # Define URL to remote service
-    url = ORCID_AUTH_URL
+    url = r"https://pub.sandbox.orcid.org/v3.0/{0:s}/record" if DEBUG else r"https://orcid.org/v3.0/{0:s}/record"
     # Define header
     header = {
             'Content-Type': 'application/json',

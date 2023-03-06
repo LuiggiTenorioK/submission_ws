@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+djangorestframework = "3.12.4"
+environs = "~=9.4.0"
+pytimeparse = "~=1.1.8"
+pyjwt = "~=2.3.0"
+django-filter = "~=21.1"
+django-admin-rangefilter = "~=0.8.4"
+requests = "~=2.26.0"
+drmaa = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9.7"
