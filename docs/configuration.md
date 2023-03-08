@@ -3,7 +3,7 @@
 Enviroment variables:
 
 * DRMFUL_CONFIG_PATH
-* DJANGO_SECRET_KEY
+* DJANGO_SECRET_KEY (optional)
 
 ## CLUSTER
 

@@ -3,6 +3,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy
 from pytimeparse.timeparse import timeparse
 
+def get_anon_user_throttle():
+    anon = Group.objects.get_or_create(name='anon',
+                                       defaults={'throttling_rate_burst'    : '20/s',
+                                                 'throttling_rate_sustained': '100/d',
+                                                 'token_renewal_time'       : '3 days'})[0]
+    return anon
 
 class Admin(AbstractUser):
     # Update names
@@ -68,11 +74,6 @@ class User(models.Model):
 
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
 
-    anon_user = Group.objects.get_or_create(name='anon',
-                                            defaults={'throttling_rate_burst'    : '20/s',
-                                                      'throttling_rate_sustained': '100/d',
-                                                      'token_renewal_time'       : '3 days'})[0]
-
     def __str__(self):
         return self.username
 
@@ -95,14 +96,14 @@ class User(models.Model):
         if self.group:
             return self.group.throttling_rate_burst
         else:
-            return self.anon_user.throttling_rate_burst
+            return get_anon_user_throttle().throttling_rate_burst
 
     @property
     def throttling_rate_sustained(self):
         if self.group:
             return self.group.throttling_rate_sustained
         else:
-            return self.anon_user.throttling_rate_sustained
+            return get_anon_user_throttle().throttling_rate_sustained
 
     @property
     def get_token_renewal_time_seconds(self):
@@ -111,7 +112,7 @@ class User(models.Model):
         elif self.group:
             return timeparse(self.group.token_renewal_time)
         else:
-            return timeparse(self.anon_user.token_renewal_time)
+            return timeparse(get_anon_user_throttle().token_renewal_time)
 
     # Metadata
     class Meta:

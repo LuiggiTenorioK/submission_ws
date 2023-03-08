@@ -12,8 +12,11 @@ django-filter = "~=21.1"
 django-admin-rangefilter = "~=0.8.4"
 requests = "~=2.26.0"
 drmaa = "*"
+django-cors-headers = "*"
+django-extensions = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9.7"
+python_version = "3.9"

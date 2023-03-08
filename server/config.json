@@ -3,7 +3,7 @@
     "MAX_PAGE_SIZE": 1000,
     "CLUSTER": {
         "DRM_SYSTEM": "SLURM",
-        "DRMAA_LIBRARY_PATH": "/usr/lib/slurm-drmaa/lib/libdrmaa.so",
+        "DRMAA_LIBRARY_PATH": "/usr/local/lib/libdrmaa.so.1",
         "SUBMISSION_SCRIPT_DIR": "~/scripts/",
         "SUBMISSION_OUTPUT_DIR": "~/outputs/",
         "SUBMISSION_LOGGER_PTH": "logger.log",
@@ -30,10 +30,10 @@
         "CSRF_TRUSTED_ORIGINS": []
     },
     "DATABASE": {
-        "NAME": "submission_ws",
-        "USER": "maria",
-        "PASSWORD": "password",
-        "HOST": "/var/run/mysqld/mysqld.sock",
+        "NAME": "slurm_acct_db",
+        "USER": "slurm",
+        "PASSWORD": "slurmdbpass",
+        "HOST": "127.0.0.1",
         "PORT": "3306"
     }
 }

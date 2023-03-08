@@ -3,18 +3,9 @@ import logging
 
 from rest_framework.throttling import AnonRateThrottle, SimpleRateThrottle
 
-from submission.models import Group
+from submission.models import Group, get_anon_user_throttle
 
 logger = logging.getLogger(__name__)
-
-
-def get_anon_user_throttle():
-    anon = Group.objects.get_or_create(name='anon',
-                                       defaults={'throttling_rate_burst'    : '20/s',
-                                                 'throttling_rate_sustained': '100/d',
-                                                 'token_renewal_time'       : '3 days'})[0]
-    return anon
-
 
 class IPRateThrottleBurst(AnonRateThrottle):
     scope = 'ipBurst'
