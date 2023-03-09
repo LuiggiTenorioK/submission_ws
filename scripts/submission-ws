@@ -15,13 +15,14 @@ while true; do
   esac
 done
 
-SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../ && pwd )"
+# SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../ && pwd )"
 
-echo $SCRIPTS_DIRECTORY
-echo $PROJECT_DIRECTORY
+# echo $SCRIPTS_DIRECTORY
+# echo $PROJECT_DIRECTORY
 
-echo $( pwd )
+# echo $( pwd )
 
-(cd $PROJECT_DIRECTORY && gunicorn server.wsgi --bind "0.0.0.0:$port")
+# (cd $PROJECT_DIRECTORY && 
+gunicorn server.wsgi --bind "0.0.0.0:$port"
 # cd ../submission_ws && ./manage.py runserver "$port"
