@@ -1,3 +1,3 @@
-./manage.py makemigrations flush
-./manage.py makemigrations submission
-./manage.py migrate
+submission-ws-manage makemigrations flush
+submission-ws-manage makemigrations submission
+submission-ws-manage migrate
