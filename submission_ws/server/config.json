@@ -30,9 +30,9 @@
         "CSRF_TRUSTED_ORIGINS": []
     },
     "DATABASE": {
-        "NAME": "slurm_acct_db",
-        "USER": "slurm",
-        "PASSWORD": "slurmdbpass",
+        "NAME": "submission_ws",
+        "USER": "root",
+        "PASSWORD": "password",
         "HOST": "127.0.0.1",
         "PORT": "3306"
     }

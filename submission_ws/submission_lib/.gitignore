@@ -4,17 +4,12 @@ __pycache__/
 *$py.class
 
 .idea/
-submission/migrations/*
-!submission/migrations/__init__.py
+
 outputs/*
 !outputs/.gitkeep
-downloads/*
-!downloads/.gitkeep
 
 # C extensions
 *.so
-
-.idea/
 
 # Distribution / packaging
 .Python
@@ -137,9 +132,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-.idea/
-.vscode/
-submission_ws/submission/migrations/
-
-# scripts/
