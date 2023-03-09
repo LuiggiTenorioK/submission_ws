@@ -23,5 +23,5 @@ echo $PROJECT_DIRECTORY
 
 echo $( pwd )
 
-(cd $PROJECT_DIRECTORY && gunicorn submission_ws.server.wsgi --bind "0.0.0.0:$port")
+(cd $PROJECT_DIRECTORY && gunicorn server.wsgi --bind "0.0.0.0:$port")
 # cd ../submission_ws && ./manage.py runserver "$port"
