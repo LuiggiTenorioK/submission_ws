@@ -15,6 +15,7 @@ drmaa = "*"
 django-cors-headers = "*"
 django-extensions = "*"
 mysqlclient = "*"
+gunicorn = "*"
 
 [dev-packages]
 
