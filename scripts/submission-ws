@@ -16,12 +16,12 @@ while true; do
 done
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APP_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../submission_ws && pwd )"
+PROJECT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../ && pwd )"
 
 echo $SCRIPTS_DIRECTORY
-echo $APP_DIRECTORY
+echo $PROJECT_DIRECTORY
 
 echo $( pwd )
 
-(cd $APP_DIRECTORY && gunicorn server.wsgi --bind "0.0.0.0:$port")
+(cd $PROJECT_DIRECTORY && gunicorn submission_ws.server.wsgi --bind "0.0.0.0:$port")
 # cd ../submission_ws && ./manage.py runserver "$port"
