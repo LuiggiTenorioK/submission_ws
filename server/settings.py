@@ -148,6 +148,9 @@ DATABASES = {
     }
 }
 
+# OAuth
+OAUTH_INTROSPECTION_ENDPOINT = SECURITY_CONFIG.get("OAUTH_INTROSPECTION_ENDPOINT", "")
+
 DEFAULT_RENDERER_CLASSES = (
     'rest_framework.renderers.JSONRenderer',
     'submission.renderers.CustomBrowsableAPIRenderer',

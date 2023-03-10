@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
 
-from server.settings import DEBUG, SECRET_KEY
+from server.settings import SECRET_KEY, OAUTH_INTROSPECTION_ENDPOINT
 from .models import Token, User
 
 logger = logging.getLogger(__name__)
@@ -101,7 +101,7 @@ class BearerAuthentication(BaseAuthentication):
 # Extend Bearer token authentication to exchange it with an external service
 class RemoteAuthentication(BearerAuthentication):
     # Define URL to remote service
-    url = r"https://pub.sandbox.orcid.org/v3.0/{0:s}/record" if DEBUG else r"https://orcid.org/v3.0/{0:s}/record"
+    url = OAUTH_INTROSPECTION_ENDPOINT
     # Define header
     header = {
             'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ class RemoteAuthentication(BearerAuthentication):
             # Just raise authentication error
             raise AuthenticationFailed(_('Authentication header is not valid'))
         # Define authentication endpoint (user username as orcid ID)
-        url = self.url.format(user.username)
+        url = self.url
         # Make a request against authorization URL
         response = requests.get(url, {**self.header, keyword: secret}, **self.request)
 

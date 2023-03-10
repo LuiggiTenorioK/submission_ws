@@ -27,7 +27,8 @@
         ],
         "CSRF_COOKIE_SECURE": false,
         "SESSION_COOKIE_SECURE": false,
-        "CSRF_TRUSTED_ORIGINS": []
+        "CSRF_TRUSTED_ORIGINS": [],
+        "OAUTH_INTROSPECTION_ENDPOINT": "https://orcid.org/oauth/userinfo"
     },
     "DATABASE": {
         "NAME": "submission_ws",
