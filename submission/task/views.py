@@ -1,5 +1,6 @@
 import mimetypes
 import os
+from threading import Thread
 
 from django.http import FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -16,14 +17,16 @@ from submission.task.models import Task, TaskFilterSet
 from submission.task.serializers import SuperTaskSerializer, TaskSerializer
 from submission.throttles import *
 from submission.utils import request_by_admin
-from submission_lib.manage import terminate_job
+from submission_lib.manage import terminate_job, wait_job
+from submission.amqp import basic_publish, do_wait
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     parser_classes = (FormParser, MultiPartParser)
 
-    authentication_classes = [api_settings.DEFAULT_AUTHENTICATION_CLASSES[0], BearerAuthentication]
+    authentication_classes = [
+        api_settings.DEFAULT_AUTHENTICATION_CLASSES[0], BearerAuthentication]
     permission_classes = [IsOwner | IsSuper]
     lookup_field = "uuid"
 
@@ -48,7 +51,8 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_throttles(self):
         if self.action == "create":
-            _throttle_classes = [IPRateThrottleBurst, IPRateThrottleSustained, UserBasedThrottleBurst, UserBasedThrottleSustained]
+            _throttle_classes = [IPRateThrottleBurst, IPRateThrottleSustained,
+                                 UserBasedThrottleBurst, UserBasedThrottleSustained]
         else:
             _throttle_classes = [IPRateThrottleBurst, UserBasedThrottleBurst]
         return [throttle() for throttle in _throttle_classes]
@@ -82,7 +86,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(uuid__in=uuids)
             else:
                 # Else return only the tasks owned by the user that are not deleted
-                queryset = queryset.filter(uuid__in=uuids, user=request.user, deleted=False)
+                queryset = queryset.filter(
+                    uuid__in=uuids, user=request.user, deleted=False)
 
             for task in queryset:
                 task.update_drm_status()
@@ -111,7 +116,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         """
         Retrieve the task and update the status of the DRM job
         """
-        task = self.get_object()
+        task: Task = self.get_object()
         # Update the drm status before returning the task
         task.update_drm_status()
 
@@ -140,21 +145,23 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=True)
     def download(self, request, **kwargs):
-        task = self.get_object()
+        task: Task = self.get_object()
 
         task.update_drm_status()
 
         if task.has_finished():
             p_task = task.get_first_ancestor()
 
-            zip_file = os.path.join(SUBMISSION_OUTPUT_DIR, str(p_task.uuid), "{}.zip".format(p_task.uuid))
+            zip_file = os.path.join(SUBMISSION_OUTPUT_DIR, str(
+                p_task.uuid), "{}.zip".format(p_task.uuid))
             try:
                 file_handle = open(zip_file, "rb")
 
                 mimetype, _ = mimetypes.guess_type(zip_file)
                 response = FileResponse(file_handle, content_type=mimetype)
                 response['Content-Length'] = os.path.getsize(zip_file)
-                response['Content-Disposition'] = "attachment; filename={}".format("{}.zip".format(p_task.uuid))
+                response['Content-Disposition'] = "attachment; filename={}".format(
+                    "{}.zip".format(p_task.uuid))
                 return response
             except FileNotFoundError:
                 return Response(status=status.HTTP_404_NOT_FOUND)
@@ -164,12 +171,13 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=True)
     def file(self, request, path, **kwargs):
-        task = self.get_object()
+        task: Task = self.get_object()
 
         p_task = task.get_first_ancestor()
 
         root = os.path.join(SUBMISSION_OUTPUT_DIR, str(p_task.uuid))
-        files = [os.path.join(dp.replace(root, ''), f).lstrip('/') for dp, dn, fn in os.walk(root) for f in fn]
+        files = [os.path.join(dp.replace(root, ''), f).lstrip('/')
+                 for dp, dn, fn in os.walk(root) for f in fn]
 
         if not request_by_admin(request):
             to_remove = []
@@ -185,17 +193,36 @@ class TaskViewSet(viewsets.ModelViewSet):
                 file = os.path.join(root, path)
                 file_handle = open(file, "rb")
                 mimetype, _ = mimetypes.guess_type(file)
-                response = FileResponse(file_handle, content_type=mimetype or 'text/plain', )
+                response = FileResponse(
+                    file_handle, content_type=mimetype or 'text/plain', )
                 response['Content-Length'] = os.path.getsize(file)
-                response['Content-Disposition'] = "inline"  # ; filename={}".format(os.path.basename(file))
+                # ; filename={}".format(os.path.basename(file))
+                response['Content-Disposition'] = "inline"
                 return response
             else:
                 raise exceptions.NotFound()
 
         return Response(files)
-    
-    @action(methods=['GET'], detail=True)
-    def download(self, request, **kwargs):
 
-        return Response({'status': 'Hello'},
-                            status=status.HTTP_200_OK)
+    @action(methods=['POST'], detail=True)
+    def triggermq(self, request, **kwargs):
+        # Get task to wait
+        task: Task = self.get_object()
+
+        exchange = request.data.get("exchange", "")
+        route = request.data.get("route", "")
+        try:
+            timeout = int(request.data.get("timeout", 60))
+        except:
+            timeout = 60
+
+        # Send the thread
+        bg_t = Thread(target=do_wait, args=(
+            task, exchange, route, timeout), daemon=True)
+        bg_t.start()
+
+        return Response({
+            'exchange': exchange,
+            'route': route,
+            'timeout': timeout
+        }, status=status.HTTP_200_OK)

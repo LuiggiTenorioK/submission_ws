@@ -133,6 +133,9 @@ SESSION_COOKIE_SECURE = SECURITY_CONFIG.get(
     'SESSION_COOKIE_SECURE', False)
 CSRF_TRUSTED_ORIGINS = SECURITY_CONFIG.get('CSRF_TRUSTED_ORIGINS', [])
 
+# OAuth
+OAUTH_INTROSPECTION_ENDPOINT = SECURITY_CONFIG.get("OAUTH_INTROSPECTION_ENDPOINT", "")
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 DB_CONFIG = _config.get("DATABASE", {})
@@ -148,8 +151,8 @@ DATABASES = {
     }
 }
 
-# OAuth
-OAUTH_INTROSPECTION_ENDPOINT = SECURITY_CONFIG.get("OAUTH_INTROSPECTION_ENDPOINT", "")
+# AMQP
+AMQP_CONFIG = _config.get("AMQP", {})
 
 DEFAULT_RENDERER_CLASSES = (
     'rest_framework.renderers.JSONRenderer',
