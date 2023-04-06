@@ -20,7 +20,7 @@ if AMQP_HOST:
         con_params = pika.ConnectionParameters(host=AMQP_HOST, port=AMQP_PORT)
     amqp_con = pika.BlockingConnection(con_params)
 else:
-    logging.info("No AMQP host provided. AMQP client not initialized.")
+    logger.info("No AMQP host provided. AMQP client not initialized.")
 
 
 def basic_publish(exchange, route, message):
