@@ -1,5 +1,6 @@
 import pika
 import logging
+import json
 from submission.task.models import Task
 from submission_lib.manage import wait_job
 from server.settings import AMQP_CONFIG
@@ -30,14 +31,15 @@ def basic_publish(exchange, route, message):
 def do_wait(task: Task, exchange, route, timeout = 60):
     timeout_flag = False
     job_info = {}
-    print(f"Init wait for task {str(task.uuid)}")
+    logger.info(f"Init wait for task {str(task.uuid)}")
     try:
         job_info = wait_job(task._drm_job_id, timeout=timeout)._asdict()       
     except:
+        logger.error(f"Timeout wait for task {str(task.uuid)}")
         timeout_flag = True
-    print(f"End wait for task {str(task.uuid)}")
+    logger.info(f"End wait for task {str(task.uuid)}")
 
-    message = str({
+    message = json.dumps({
         "task": str(task.uuid),
         "timeout": timeout_flag,
         "job_info": {
