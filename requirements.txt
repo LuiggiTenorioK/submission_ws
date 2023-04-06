@@ -1,0 +1,11 @@
+djangorestframework >= 3.12.4
+environs
+pytimeparse
+pyjwt
+django-filter
+django-admin-rangefilter
+django-cors-headers
+django-extensions
+requests
+drmaa
+mysqlclient

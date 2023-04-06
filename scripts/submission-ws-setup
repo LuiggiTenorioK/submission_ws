@@ -1,0 +1,5 @@
+#!/bin/bash
+
+submission-ws-manage flush --noinput
+submission-ws-manage makemigrations submission
+submission-ws-manage migrate

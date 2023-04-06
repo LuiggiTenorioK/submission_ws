@@ -1,0 +1,39 @@
+{
+    "DEBUG": true,
+    "MAX_PAGE_SIZE": 1000,
+    "CLUSTER": {
+        "DRM_SYSTEM": "SLURM",
+        "DRMAA_LIBRARY_PATH": "/usr/local/lib/libdrmaa.so.1",
+        "SUBMISSION_SCRIPT_DIR": "~/scripts/",
+        "SUBMISSION_OUTPUT_DIR": "~/outputs/",
+        "SUBMISSION_LOGGER_PTH": "logger.log",
+        "REMOVE_TASK_FILES_ON_DELETE": true
+    },
+    "SECURITY": {
+        "CORS_ALLOWED_ORIGINS": [
+            "http://localhost:4200",
+            "http://localhost:4205",
+            "https://ring.biocomputingup.it",
+            "https://dev.proteinensemble.org",
+            "https://assessment.proteinsemble.org",
+            "https://biocomputingup.it",
+            "https://www.biocomputingup.it",
+            "https://protein.bio.unipd.it",
+            "https://dev.caid.idpcentral.org",
+            "https://caid.idpcentral.org"
+        ],
+        "ALLOWED_HOSTS": [
+            "*"
+        ],
+        "CSRF_COOKIE_SECURE": false,
+        "SESSION_COOKIE_SECURE": false,
+        "CSRF_TRUSTED_ORIGINS": []
+    },
+    "DATABASE": {
+        "NAME": "submission_ws",
+        "USER": "root",
+        "PASSWORD": "password",
+        "HOST": "db",
+        "PORT": "3306"
+    }
+}
