@@ -1,0 +1,621 @@
+openapi: 3.0.2
+info:
+  title: 'DRMful API specification'
+  version: '0.1'
+paths:
+  /task/{uuid}/download/:
+    get:
+      operationId: downloadTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+  /task/{uuid}/file/{path}:
+    get:
+      operationId: fileTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: path
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+  /task/:
+    get:
+      operationId: listTasks
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - task has been rejected from the ws
+          - task has been received from the ws
+          - task has been created and sent to the DRM
+          - process status cannot be determined
+          - job is queued and active
+          - job is queued and in system hold
+          - job is queued and in user hold
+          - job is queued and in user and system hold
+          - job is running
+          - job is system suspended
+          - job is user suspended
+          - job finished normally
+          - job finished, but failed
+      - name: task_name
+        required: false
+        in: query
+        description: task_name
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+    post:
+      operationId: createTask
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+  /task/{uuid}/:
+    get:
+      operationId: retrieveTask
+      description: Retrieve the task and update the status of the DRM job
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - task has been rejected from the ws
+          - task has been received from the ws
+          - task has been created and sent to the DRM
+          - process status cannot be determined
+          - job is queued and active
+          - job is queued and in system hold
+          - job is queued and in user hold
+          - job is queued and in user and system hold
+          - job is running
+          - job is system suspended
+          - job is user suspended
+          - job finished normally
+          - job finished, but failed
+      - name: task_name
+        required: false
+        in: query
+        description: task_name
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+    put:
+      operationId: updateTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - task has been rejected from the ws
+          - task has been received from the ws
+          - task has been created and sent to the DRM
+          - process status cannot be determined
+          - job is queued and active
+          - job is queued and in system hold
+          - job is queued and in user hold
+          - job is queued and in user and system hold
+          - job is running
+          - job is system suspended
+          - job is user suspended
+          - job finished normally
+          - job finished, but failed
+      - name: task_name
+        required: false
+        in: query
+        description: task_name
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+    patch:
+      operationId: partialUpdateTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - task has been rejected from the ws
+          - task has been received from the ws
+          - task has been created and sent to the DRM
+          - process status cannot be determined
+          - job is queued and active
+          - job is queued and in system hold
+          - job is queued and in user hold
+          - job is queued and in user and system hold
+          - job is running
+          - job is system suspended
+          - job is user suspended
+          - job finished normally
+          - job finished, but failed
+      - name: task_name
+        required: false
+        in: query
+        description: task_name
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+    delete:
+      operationId: destroyTask
+      description: Destroy the task, stopping it in DRM, but preserving it in the
+        database
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - task has been rejected from the ws
+          - task has been received from the ws
+          - task has been created and sent to the DRM
+          - process status cannot be determined
+          - job is queued and active
+          - job is queued and in system hold
+          - job is queued and in user hold
+          - job is queued and in user and system hold
+          - job is running
+          - job is system suspended
+          - job is user suspended
+          - job finished normally
+          - job finished, but failed
+      - name: task_name
+        required: false
+        in: query
+        description: task_name
+        schema:
+          type: string
+      - name: description
+        required: false
+        in: query
+        description: description
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - task
+  /task/{uuid}/file/:
+    get:
+      operationId: listFileTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+  /script/:
+    get:
+      operationId: listScripts
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Script'
+          description: ''
+      tags:
+      - script
+  /script/{name}/:
+    get:
+      operationId: retrieveScript
+      description: ''
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Script'
+          description: ''
+      tags:
+      - script
+  /token/{id}/:
+    get:
+      operationId: retrieveTokenViewSet
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - token
+  /task/{uuid}/triggermq/:
+    post:
+      operationId: triggermqTask
+      description: ''
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Task'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+          description: ''
+      tags:
+      - task
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+        task_name:
+          type: string
+        descendants:
+          type: string
+          readOnly: true
+        dependencies:
+          type: string
+          writeOnly: true
+        depends_on:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        dependency_type:
+          enum:
+          - afterany
+          - afterok
+          - afternotok
+          type: string
+          nullable: true
+        task_description:
+          type: string
+        parent_task:
+          type: string
+        creation_date:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          type: string
+          readOnly: true
+        files_name:
+          type: object
+          readOnly: true
+        params:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                readOnly: true
+              value:
+                type: string
+                maxLength: 5000
+            required:
+            - value
+          readOnly: true
+      required:
+      - task_name
+    Script:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        param:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 100
+              type:
+                enum:
+                - int
+                - float
+                - string
+                - bool
+                - file
+                type: string
+              default:
+                type: string
+                maxLength: 1000
+              description:
+                type: string
+                maxLength: 300
+              required:
+                type: boolean
+            required:
+            - name
+          readOnly: true
+      required:
+      - name

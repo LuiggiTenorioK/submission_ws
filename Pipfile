@@ -19,6 +19,8 @@ gunicorn = "*"
 pika = "*"
 
 [dev-packages]
+pyyaml = "*"
+uritemplate = "*"
 
 [requires]
 python_version = "3.8"

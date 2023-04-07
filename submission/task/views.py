@@ -38,7 +38,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     max_page_size = 10
 
     def get_serializer_class(self):
-        if self.request.user and self.request.user.is_admin():
+        if self.request and self.request.user and self.request.user.is_admin():
             return SuperTaskSerializer
         else:
             return TaskSerializer

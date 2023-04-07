@@ -16,7 +16,7 @@ class ScriptViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = "name"
 
     def get_serializer_class(self):
-        if self.request.user and self.request.user.is_admin():
+        if self.request and self.request.user and self.request.user.is_admin():
             return SuperScriptSerializer
         else:
             return ScriptSerializer
