@@ -10,6 +10,9 @@ Welcome to DRMful's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   Home <self>
+   installation
+   usage
    api
 
 
