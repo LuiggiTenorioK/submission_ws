@@ -225,4 +225,4 @@ class TaskViewSet(viewsets.ModelViewSet):
             'exchange': exchange,
             'route': route,
             'timeout': timeout
-        }, status=status.HTTP_200_OK)
+        }, status=status.HTTP_201_CREATED)

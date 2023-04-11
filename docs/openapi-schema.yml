@@ -1,70 +1,208 @@
-openapi: '3.0.2'
+openapi: 3.0.0
+x-stoplight:
+  id: 79cc8kly2ana9
 info:
-  title: Submission server API
+  title: DRMful API
   version: '0.1'
-# Re-usable components
+  contact:
+    email: biocomp@bio.unipd.it
+    url: 'https://protein.bio.unipd.it/'
+    name: BioComputing UP
+  description: DRMful API specification
+  license:
+    name: MIT
+    url: 'https://opensource.org/license/mit/'
 components:
-  # Define component schemes
   schemas:
-    # User object
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique ID of the user
-        email:
-          type: string
-          description: Email address of the user
-    # Script object
     Script:
       type: object
+      x-stoplight:
+        id: rwudssj7lane1
       properties:
         name:
           type: string
           description: Unique name of the script to submit
-        params:
-          type: object
-          additionalProperties: true
+        command:
+          type: string
+          x-stoplight:
+            id: ys6g9ph5e9l9p
+          description: Command to be executed
+        job:
+          type: string
+          x-stoplight:
+            id: 2lve8qnuqpw84
+          description: DRM job template assigned
+        groups:
+          type: array
+          x-stoplight:
+            id: 75ipgjpzlkcpi
+          description: |-
+            Groups that can execute the
+            script. If none, it can be executed by anyone
+          items: {}
+        is_output_visible:
+          type: boolean
+          x-stoplight:
+            id: 9sbjhrm2snffm
+          default: true
+          description: |-
+            If the output files are
+            visible
+        max_clock_time:
+          type: string
+          x-stoplight:
+            id: mumblcayjb4an
+          description: |-
+            Timeout for its running
+            time
+        is_array:
+          type: boolean
+          x-stoplight:
+            id: xm87cl6u8ud39
+          default: false
+          description: If is an array of jobs
+        param:
+          type: array
           description: Dictionary mapping parameter names to values
-    # Task object
+          x-stoplight:
+            id: 9asy67i9okk5z
+          items: {}
     Task:
       type: object
-      # Define required properties
-      required: [ 'status', 'queue' ]
-      # Define property schema
+      x-stoplight:
+        id: 6axosdqweaw6l
       properties:
         uuid:
           type: string
           description: Unique ID of the current task
+        task_name:
+          type: string
+          x-stoplight:
+            id: daq510bsdql05
+          description: Name of the script used in this task
+        depends_on:
+          type: array
+          x-stoplight:
+            id: s17w2ef2sfznn
+          description: List of tasks that the current task depends on
+          items:
+            x-stoplight:
+              id: dox310co05bve
+            type: string
+        dependency_type:
+          type: string
+          x-stoplight:
+            id: bg5es3k6auge0
+          description: Type of dependency
+          enum:
+            - afterany
+            - afterok
+            - afternotok
+        sender_ip_addr:
+          type: string
+          x-stoplight:
+            id: yxlbaitx25tos
+          description: IP address of the sender
         status:
           type: string
           description: Current status of the task
-        queue:
+        deleted:
+          type: boolean
+          x-stoplight:
+            id: 5m32xru0i3z4i
+          default: false
+          description: If the task is deleted
+        drm_job_id:
           type: string
-          description: Unique ID of the queue
-        user:
-          $ref: '#/components/schemas/User'
-        script:
-          $ref: '#/components/schemas/Script'
-  # Define security schemes (only access token)
+          x-stoplight:
+            id: jj3bamt1rp1va
+          description: Internal id of the job in the DRM
+        files_name:
+          type: object
+          x-stoplight:
+            id: ktvyjqo2o78r2
+          description: Mapping of the provided files in the current task
+        creation_date:
+          type: string
+          x-stoplight:
+            id: xdjggfmbcudpy
+          description: Timestamp of the creation
+        update_date:
+          type: string
+          x-stoplight:
+            id: 4jbv1quqcb78y
+          description: Timestamp of the last update
+        param:
+          type: array
+          x-stoplight:
+            id: zge6dqn4r0fdv
+          description: Dictionary mapping parameter names to values
+          items: {}
+      description: ''
   securitySchemes:
-    # Access token
     baererAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-# Global security settings 
 security:
-  # Define scopes
-  - baererAuth: [ ]
-# Implemented paths
+  - baererAuth: []
 paths:
-  # Check script parameters
-  /script/{name}:
+  /script:
+    get:
+      summary: List Scripts
+      description: Return a list of the available scripts
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: '(Ok) given script exists, parameters are returned'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    x-stoplight:
+                      id: 95amxh1apy89a
+                    description: Number of found scripts
+                  next:
+                    type: string
+                    x-stoplight:
+                      id: ai639miyb4cw5
+                    description: URI to the next page
+                  previous:
+                    type: string
+                    x-stoplight:
+                      id: rx1mvf3afb9yl
+                    description: URI to the previous page
+                  results:
+                    x-stoplight:
+                      id: j3q0igwzangg6
+                    type: array
+                    description: List of the scripts
+                    items:
+                      $ref: '#/components/schemas/Script'
+                      x-stoplight:
+                        id: 8aj7lx88aeyms
+        '404':
+          description: (Not found) given script does not exist
+      operationId: list-scripts
+  '/script/{name}':
     get:
       summary: Get Script
-      description: Return parameters, type and validation for given script
+      description: 'Return parameters, type and validation for given script'
       parameters:
         - in: path
           name: name
@@ -74,39 +212,45 @@ paths:
           description: Unique name of the script
       responses:
         '200':
-          description: (Ok) given script exists, parameters are returned
+          description: '(Ok) given script exists, parameters are returned'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Script'
         '404':
           description: (Not found) given script does not exist
-  /script/:
-    get:
-      summary: List Scripts
-      description: Return parameters, type and validation for given script
-      responses:
-        '200':
-          description: (Ok) given script exists, parameters are returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Script'
-        '404':
-          description: (Not found) given script does not exist
-  # Operations on tasks
-  /task/:
-    # Submit a task
+      operationId: get-script
+    parameters:
+      - schema:
+          type: string
+        name: name
+        in: path
+        required: true
+        description: Unique name of the script
+  /task:
     post:
       summary: Create Task
       description: Submit a new task to the DRM
       requestBody:
-        description: Optional description in *Markdown*
+        description: task_name has to be provided. Then all the parameters are defined in the Script.
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Task'
+              type: object
+              properties:
+                task_name:
+                  type: string
+                  x-stoplight:
+                    id: f2992l4ihpxt4
+                  description: Name of the script used in this task
+                '{param}':
+                  type: string
+                  x-stoplight:
+                    id: upxz511e8h0s0
+                  description: Arbitrary parameter of the Script
+              required:
+                - task_name
       responses:
         '201':
           description: (Created) given task has been submitted
@@ -116,12 +260,12 @@ paths:
                 $ref: '#/components/schemas/Task'
         '400':
           description: (Bad request) given parameters do not satisfy any task specification
-        '500':
-          description: (Internal server error) given task could not start
         '403':
           description: (Forbidden) your request cannot be submitted
-  # Other operations on tasks
-  /task/{uuid}/:
+        '500':
+          description: (Internal server error) given task could not start
+      operationId: create-task
+  '/task/{uuid}':
     parameters:
       - in: path
         name: uuid
@@ -129,10 +273,9 @@ paths:
           type: string
         required: true
         description: Unique ID of the task
-    # Retrieve a task
     get:
-      summary: Get Task Status
-      description: Retrieve status of the given task
+      summary: Get Task
+      description: Retrieve details of the given task
       responses:
         '200':
           description: (Ok) task has been retrieved
@@ -140,14 +283,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-        '404':
-          description: (Not found) task does not exist
         '403':
           description: (Forbidden) your request cannot be fulfilled
-    # Delete a task
+        '404':
+          description: (Not found) task does not exist
+      operationId: get-task
     delete:
       summary: Delete Task
-      description: Delete given task, if any
+      description: 'Delete given task, if any'
       responses:
         '204':
           description: (No content) task has been deleted
@@ -155,13 +298,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-        '404':
-          description: (Not found) task does not exist
         '403':
           description: (Forbidden) your request cannot be fulfilled
+        '404':
+          description: (Not found) task does not exist
         '500':
           description: (Internal server error) the task was not deleted for whatever reason
-  /task/{uuid}/download/:
+      operationId: delete-task
+  '/task/{uuid}/triggermq':
     parameters:
       - in: path
         name: uuid
@@ -169,7 +313,66 @@ paths:
           type: string
         required: true
         description: Unique ID of the task
-    # Retrieve a task
+    post:
+      summary: Create Task Trigger
+      description: Submit a new task trigger. This will send a message to the provided message queue when the task end.
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exchange:
+                  type: string
+                  x-stoplight:
+                    id: xg999nag9st8s
+                  description: Exchange name of the queue to send the notification
+                route:
+                  type: string
+                  x-stoplight:
+                    id: gpvpg1v6t9p73
+                  description: Route name of the queue to send the notification
+                timeout:
+                  type: integer
+                  x-stoplight:
+                    id: bde0vnga2nwh5
+                  description: Timeout to wait for the Task to end
+                  default: 60
+      responses:
+        '201':
+          description: (Created) given task trigger has been submitted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exchange:
+                    type: string
+                    x-stoplight:
+                      id: xg999nag9st8s
+                    description: Exchange name used to send the notification
+                  route:
+                    type: string
+                    x-stoplight:
+                      id: gpvpg1v6t9p73
+                    description: Route name used to send the notification
+                  timeout:
+                    type: integer
+                    x-stoplight:
+                      id: bde0vnga2nwh5
+                    description: Timeout used to wait for the Task to end
+                    default: 60
+      operationId: create-task-trigger
+  '/task/{uuid}/download':
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        required: true
+        description: Unique ID of the task
     get:
       summary: Download Task
       description: Download current working dir as zip of the given task
@@ -181,11 +384,12 @@ paths:
               schema:
                 type: string
                 format: binary
-        '404':
-          description: (Not found) task does not exist
         '403':
           description: (Forbidden) your request cannot be fulfilled
-  /task/{uuid}/triggermq/:
+        '404':
+          description: (Not found) task does not exist
+      operationId: download-task
+  '/task/{uuid}/file':
     parameters:
       - in: path
         name: uuid
@@ -193,45 +397,27 @@ paths:
           type: string
         required: true
         description: Unique ID of the task
-    # create a task trigger
-    post:
-      summary: Create Task Trigger
-      description: Submit a new task trigger
-      requestBody:
-        description: Optional description in *Markdown*
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Task'
-      responses:
-        '201':
-          description: (Created) given task trigger has been submitted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-  /task/{uuid}/files/:
-    parameters:
-      - in: path
-        name: uuid
-        schema:
-          type: string
-        required: true
-        description: Unique ID of the task
-    # Retrieve a task
     get:
       summary: List Task Files
-      description: Get the content of the working directory as list of files
+      description: Get the content of the working directory as a list of files
       responses:
         '200':
           description: (Ok)
-        '404':
-          description: (Not found) task does not exist
+          content:
+            application/json:
+              schema:
+                type: array
+                description: List of files of the Task
+                items:
+                  x-stoplight:
+                    id: r3s3mqx8zi8qb
+                  type: string
         '403':
           description: (Forbidden) your request cannot be fulfilled
-  # Exchange external token for an internal one
-  /token/{username}/:
+        '404':
+          description: (Not found) task does not exist
+      operationId: list-files
+  '/token/{username}':
     parameters:
       - in: path
         name: username
@@ -241,7 +427,7 @@ paths:
         description: unique ID of the user trying to authenticate
     get:
       summary: Get User Token
-      description: Exchanges external/OAuth2 access token with an internal one. It uses email for granting access to authenticated users. Therefore, requesting application is responsible for providing an access token with enough information (for now, email address is required).
+      description: 'Exchanges external/OAuth2 access token with an internal one. It uses email for granting access to authenticated users. Therefore, requesting application is responsible for providing an access token with enough information (for now, email address is required).'
       responses:
         '200':
           description: (Ok) you have been authenticated by external service
@@ -252,3 +438,4 @@ paths:
                 example: isthisanaccesstoken?
         '403':
           description: (Forbidden) your request has been refused by external authentication service
+      operationId: get-token
