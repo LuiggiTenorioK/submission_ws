@@ -1,4 +1,4 @@
 API
 ===
 
-.. openapi:: openapi2-schema.json
+.. openapi:: openapi2-schema.yml
