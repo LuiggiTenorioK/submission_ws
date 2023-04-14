@@ -142,7 +142,7 @@ class RemoteAuthentication(BearerAuthentication):
         username = request.parser_context.get('kwargs', {}).get('pk', '')
         # Define current user
         # NOTE might raise not-found exception
-        user, _ = self.user.objects.get_or_create(username=username,
+        user, is_created = self.user.objects.get_or_create(username=username,
                                                   defaults={'source': User.ORCID, 'active': True})
         # Check that user is active
         if not user.active:

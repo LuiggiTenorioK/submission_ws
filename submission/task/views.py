@@ -1,6 +1,5 @@
 import mimetypes
 import os
-from threading import Thread
 
 from django.http import FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,8 +16,7 @@ from submission.task.models import Task, TaskFilterSet
 from submission.task.serializers import SuperTaskSerializer, TaskSerializer
 from submission.throttles import *
 from submission.utils import request_by_admin
-from submission_lib.manage import terminate_job, wait_job
-from submission.amqp import basic_publish, do_wait
+from submission_lib.manage import terminate_job
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -203,26 +201,3 @@ class TaskViewSet(viewsets.ModelViewSet):
                 raise exceptions.NotFound()
 
         return Response(files)
-
-    @action(methods=['POST'], detail=True)
-    def triggermq(self, request, **kwargs):
-        # Get task to wait
-        task: Task = self.get_object()
-
-        exchange = request.data.get("exchange", "")
-        route = request.data.get("route", "")
-        try:
-            timeout = int(request.data.get("timeout", 60))
-        except:
-            timeout = 60
-
-        # Send the thread
-        bg_t = Thread(target=do_wait, args=(
-            task, exchange, route, timeout), daemon=True)
-        bg_t.start()
-
-        return Response({
-            'exchange': exchange,
-            'route': route,
-            'timeout': timeout
-        }, status=status.HTTP_201_CREATED)

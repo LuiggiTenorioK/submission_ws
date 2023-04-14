@@ -151,9 +151,6 @@ DATABASES = {
     }
 }
 
-# AMQP
-AMQP_CONFIG = _config.get("AMQP", {})
-
 DEFAULT_RENDERER_CLASSES = (
     'rest_framework.renderers.JSONRenderer',
     'submission.renderers.CustomBrowsableAPIRenderer',
