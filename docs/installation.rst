@@ -1,7 +1,7 @@
 Installation
 ============
 
-Using pip
+Installing using pip
 ----------------------
 
 Using pip, DRMful will install all the needed dependencies and command line tools. You can do this by running::
@@ -9,7 +9,7 @@ Using pip, DRMful will install all the needed dependencies and command line tool
     $ pip install https://github.com/LuiggiTenorioK/submission_ws/archive/main.zip
 
 
-From Git Repo
+Cloning Git Repo
 ----------------------
 
 Alternatively, you can clone the repository from GitHub and install the requirements::
@@ -21,7 +21,7 @@ Alternatively, you can clone the repository from GitHub and install the requirem
 
 
 Configuration
-==============
+---------------
 
 The first step to configure the Django web server is to create the configuration JSON file like this
 
