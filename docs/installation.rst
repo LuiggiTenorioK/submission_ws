@@ -1,10 +1,20 @@
 Installation
 ============
 
+Pre-requisites
+----------------------
+
+Before configuring and initialize the web server, there are some requisites that must be fulfilled. First, **the SLURM controller must be running in the same node where you going to run the web server**. As well, the DRMAA library C files should be available in that node. Is highly recommended to use the `PSNC DRMAA for SLURM <https://github.com/natefoo/slurm-drmaa>`_ (version >= 1.1.3) with our library to handle native specification of this implementation::
+    
+    $ pip install https://github.com/damiclem/submission_lib/archive/setup.zip
+
+Additionally, **a MySQL instance must be active** to store the data of this server.
+
+
 Installing using pip
 ----------------------
 
-Using pip, DRMAAtic will install all the needed dependencies and command line tools. You can do this by running::
+Using pip, it will install the DRMAAtic Python dependencies. You can do this by running::
 
     $ pip install https://github.com/LuiggiTenorioK/submission_ws/archive/main.zip
 
@@ -17,14 +27,6 @@ Alternatively, you can clone the repository from GitHub and install the requirem
     $ git clone https://github.com/LuiggiTenorioK/submission_ws.git
     $ cd submission_ws
     $ pip install -r requirements.txt
-
-
-Pre requisites
-----------------------
-
-Before configuring and initialize the web server, there are some requisites that must be fulfilled. First, **the SLURM controller must be running in the same node where you going to run the web server**. As well, the DRMAA library C files should be available in that node. Is highly recommended to use the `PSNC DRMAA for SLURM <https://github.com/natefoo/slurm-drmaa>`_ (version >= 1.1.3).
-
-Additionally, a MySQL instance must be active to store the data of this server.
 
 
 Configuration
