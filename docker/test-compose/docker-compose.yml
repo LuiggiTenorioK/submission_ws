@@ -13,7 +13,7 @@ services:
             - db
             - mqbroker
         environment:
-            - DRMFUL_CONFIG_PATH=/config.json
+            - DRMAATIC_CONFIG_PATH=/config.json
             - DJANGO_SUPERUSER_PASSWORD=admin
         
     slurmnode1:
@@ -38,13 +38,6 @@ services:
             MYSQL_ROOT_PASSWORD: 'password'
         ports:
             - "3306:3306"
-
-    mqbroker:
-        image: rabbitmq:3
-        hostname: my-rabbit
-        restart: always
-        ports:
-            - "5672:5672"
-
+            
 volumes:
     shared-vol:

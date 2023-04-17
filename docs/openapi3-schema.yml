@@ -2,13 +2,13 @@ openapi: 3.0.0
 x-stoplight:
   id: 79cc8kly2ana9
 info:
-  title: DRMful API
+  title: DRMAAtic API
   version: '0.1'
   contact:
     email: biocomp@bio.unipd.it
     url: 'https://protein.bio.unipd.it/'
     name: BioComputing UP
-  description: DRMful API specification
+  description: DRMAAtic API specification
   license:
     name: MIT
     url: 'https://opensource.org/license/mit/'

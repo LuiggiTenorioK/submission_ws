@@ -4,11 +4,11 @@ info:
     email: biocomp@bio.unipd.it
     name: BioComputing UP
     url: 'https://protein.bio.unipd.it/'
-  description: DRMful API specification
+  description: DRMAAtic API specification
   license:
     name: MIT
     url: 'https://opensource.org/license/mit/'
-  title: DRMful API
+  title: DRMAAtic API
   version: '0.1'
 paths:
   /script:

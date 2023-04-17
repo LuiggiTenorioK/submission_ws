@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'DRMful'
+project = 'DRMAAtic'
 copyright = '2023, Biocomputing UP'
 author = 'Biocomputing UP'
 

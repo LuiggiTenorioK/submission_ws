@@ -13,7 +13,7 @@ SECRET_KEY = env.str('DJANGO_SECRET_KEY',
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load configuration file
-CONFIG_PATH = env.str("DRMFUL_CONFIG_PATH")
+CONFIG_PATH = env.str("DRMAATIC_CONFIG_PATH")
 
 if not os.path.isfile(CONFIG_PATH):
     raise RuntimeError("Invalid config file path")
