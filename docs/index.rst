@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to DRMAAtic's documentation!
-==================================
+======================================
 
 .. toctree::
    :maxdepth: 2
@@ -13,6 +13,7 @@ Welcome to DRMAAtic's documentation!
    Home <self>
    installation
    usage
+   admin-usage
    api
 
 

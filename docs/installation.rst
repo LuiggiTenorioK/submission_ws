@@ -1,10 +1,12 @@
+.. _installation:
+
 Installation
 ============
 
 Pre-requisites
 ----------------------
 
-Before configuring and initialize the web server, there are some requisites that must be fulfilled. First, **the SLURM controller must be running in the same node where you going to run the web server**. As well, the DRMAA library C files should be available in that node. Is highly recommended to use the `PSNC DRMAA for SLURM <https://github.com/natefoo/slurm-drmaa>`_ (version >= 1.1.3) with our library to handle native specification of this implementation::
+Before configuring and initializing the web server, there are some requisites that must be fulfilled. First, **the SLURM controller must be running in the same node where you going to run the web server**. As well, the DRMAA library C files should be available in that node. Is highly recommended to use the `PSNC DRMAA for SLURM <https://github.com/natefoo/slurm-drmaa>`_ (version >= 1.1.3) with our library to handle native specification of this implementation::
     
     $ pip install https://github.com/damiclem/submission_lib/archive/setup.zip
 
@@ -84,7 +86,7 @@ The first step to configure the Django web server is to create the configuration
 * **SECURITY.SESSION_COOKIE_SECURE** (boolean): Same as the `Django SESSION_COOKIE_SECURE setting <https://docs.djangoproject.com/en/4.2/ref/settings/#session-cookie-secure>`_. 
 * **SECURITY.CSRF_TRUSTED_ORIGINS** (array[string]): Same as the `Django CSRF_TRUSTED_ORIGINS setting <https://docs.djangoproject.com/en/4.2/ref/settings/#csrf-trusted-origins>`_.
 * **SECURITY.OAUTH_INTROSPECTION_ENDPOINT** (string): URI to the external authentication service endpoint to verify forwarded JWT tokens.
-* **DATABASE.*** (string): Parameters to connect to the MySQL database. Same as the `Django DATABESES settings <https://docs.djangoproject.com/en/4.2/ref/settings/#databases>`_ for one database. Only MySQL backend is supported.
+* **DATABASE.*** (string): Parameters to connect to the MySQL database. Same as the `Django DATABASES settings <https://docs.djangoproject.com/en/4.2/ref/settings/#databases>`_ for one database. Only MySQL backend is supported.
 
 Then, is needed to set up two **enviroment variables**:
 
