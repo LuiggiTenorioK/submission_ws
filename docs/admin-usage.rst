@@ -32,24 +32,24 @@ will be searched inside the ``CLUSTER.SUBMISSION_SCRIPT_DIR`` of the JSON
 configuration file unless an absolute path is provided.
 
 .. image:: _static/ui-add-script.png
-  :width: 500
+  :width: 800
 
 The DRM job template
 can be added in its own form as in below that allows defining the resources
 that the execution of this script will need. Also, the max clock time has to be a
-time expression of pytimeparse.
+time expression of `pytimeparse <https://github.com/wroberts/pytimeparse>`_.
 
 .. image:: _static/ui-add-job-template.png
-  :width: 500
+  :width: 800
 
 Additionally, the user groups that can run this script can be specified inside the form. If none of them is selected, 
 then any user can create a task from this script. Optionally, this script can be defined as a job array with the begin, end, and step indexes. 
 Finally, in the same form, the input parameters of the script can be defined by choosing its name, flag, type, default value, description, private status, and if required.
 
 .. image:: _static/ui-add-user-group.png
-  :width: 500
+  :width: 800
 
-Furthermore, DRMAA also provides a view in the user interface to list, search, and filter tasks as shown below
+Furthermore, DRMAA also provides a view in the user interface to list, search, and filter tasks as shown below.
 
 .. image:: _static/ui-list-tasks.png
-  :width: 500
+  :width: 800
