@@ -22,6 +22,8 @@ Once is initialized, you can follow the `Admin Usage guide <admin-usage.html>`_ 
 External user token exchange
 -----------------------------
 
+To use a protected resource, first, you need to get an authentication token from DRMAAtic. To get one, you need to exchange your external ORCID token for a DRMAAtic token. This can be done by calling the ``GET /token/{username}`` endpoint sending the token in the ``Authorization: Bearer <orcid_token>`` header and it will return the new token if it's successfully verified by ORCID. Then, further calls to protected resources should contain your new token in the ``Authorization: Bearer <drmaatic_token>`` header to get access.
+
 
 Getting available script information
 -------------------------------------
