@@ -6,12 +6,15 @@
 Welcome to DRMAAtic's documentation!
 ======================================
 
+.. include:: ../README.rst
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    Home <self>
    installation
+   quickstart
    usage
    admin-usage
    api

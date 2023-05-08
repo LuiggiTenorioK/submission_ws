@@ -11,7 +11,7 @@
     },
     "SECURITY": {
         "CORS_ALLOWED_ORIGINS": [
-            "http://localhost:4200"
+            "http://localhost:4821"
         ],
         "ALLOWED_HOSTS": [
             "*"

@@ -16,6 +16,8 @@ Then, you are free to follow the `Django Deployment Guide <https://docs.djangopr
 
     $ python manage.py runserver
 
+Once is initialized, you can follow the `Admin Usage guide <admin-usage>`_ to create your available scripts.
+
 
 External user token exchange
 -----------------------------

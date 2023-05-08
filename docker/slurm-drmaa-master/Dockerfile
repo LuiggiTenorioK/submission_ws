@@ -9,3 +9,5 @@ RUN wget https://github.com/natefoo/slurm-drmaa/releases/download/1.1.3/slurm-dr
     && tar -xvzf slurm-drmaa-1.1.3.tar.gz \
     && cd slurm-drmaa-1.1.3 \
     && ./configure && make && make install && ldconfig 
+
+CMD echo "Ready!"
